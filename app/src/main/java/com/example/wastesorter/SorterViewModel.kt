@@ -28,6 +28,9 @@ class SorterViewModel(app: Application) : AndroidViewModel(app) {
     var result by mutableStateOf<Prediction?>(null); private set
     var busy by mutableStateOf(false); private set
 
+    // 1.2.0: эко-статистика
+    var stats by mutableStateOf(EcoStats.load(app)); private set
+
     fun analyze(bmp: Bitmap) {
         photo = bmp
         result = null
@@ -37,6 +40,10 @@ class SorterViewModel(app: Application) : AndroidViewModel(app) {
                 runCatching { classifier.classify(bmp) }.onFailure(Monitoring::nonFatal).getOrNull()
             }
             result?.let {
+                if (it.confidence >= MIN_CONFIDENCE) {
+                    stats = EcoStats(WASTE_INFO.keys.associateWith(stats::count).filterValues { c -> c > 0 }.toMutableMap()).apply { add(it.label) }
+                    EcoStats.save(getApplication(), stats)
+                }
                 Monitoring.event("classify", mapOf("label" to it.label, "sure" to (it.confidence >= MIN_CONFIDENCE).toString()))
             }
             busy = false

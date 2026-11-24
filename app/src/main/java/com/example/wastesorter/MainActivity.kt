@@ -113,6 +113,9 @@ fun SorterScreen(vm: SorterViewModel) {
 
         result?.let { ResultCard(it, onShare = { shareResult(context, it) }) }
 
+        // 1.2.0: новая функция за флагом eco_stats_enabled
+        if (FeatureFlags.isEnabled(FeatureFlags.ECO_STATS)) EcoStatsCard(vm.stats)
+
         VersionFooter()
     }
 }
@@ -166,6 +169,28 @@ fun ResultCard(r: Prediction, onShare: () -> Unit = {}) {
                 // 1.1.0: новая функция за feature flag — её можно выключить в Remote Config без релиза
                 if (FeatureFlags.isEnabled(FeatureFlags.SHARE_RESULT)) {
                     OutlinedButton(onClick = onShare, Modifier.fillMaxWidth()) { Text("Поделиться") }
+                }
+            }
+        }
+    }
+}
+
+/** 1.2.0: сколько и чего пользователь уже отсортировал. */
+@Composable
+fun EcoStatsCard(stats: EcoStats) {
+    Card(shape = RoundedCornerShape(20.dp)) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("🌍 Эко-статистика", fontWeight = FontWeight.SemiBold)
+            Text("Отсортировано предметов: ${stats.total}", style = MaterialTheme.typography.bodyMedium)
+            WASTE_INFO.forEach { (label, info) ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("${info.emoji} ${info.title}", Modifier.width(110.dp), style = MaterialTheme.typography.bodySmall)
+                    LinearProgressIndicator(
+                        progress = { stats.percent(label) / 100f },
+                        modifier = Modifier.weight(1f).height(8.dp).clip(RoundedCornerShape(4.dp)),
+                        color = info.color,
+                    )
+                    Text("${stats.percent(label)}%", Modifier.width(44.dp), style = MaterialTheme.typography.bodySmall)
                 }
             }
         }

@@ -5,6 +5,10 @@
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-24 (versionCode 10200)
+### Added
+- «Эко-статистика»: сколько предметов каждого вида вы отсортировали (флаг `eco_stats_enabled`). Данные хранятся только на устройстве.
+
 ## [1.1.0] - 2026-11-24 (versionCode 10100)
 ### Added
 - Кнопка «Поделиться» в карточке результата: контейнер и совет по сдаче отправляются в мессенджер (флаг `share_result_enabled`).
@@ -29,7 +33,8 @@
 - Распознавание пластика, стекла и бумаги моделью TensorFlow Lite (вход 224×224).
 - Фото с камеры и из галереи, карточка результата с контейнером и советами по сдаче.
 
-[Unreleased]: https://github.com/USER/WasteSorter/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/USER/WasteSorter/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/USER/WasteSorter/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/USER/WasteSorter/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/USER/WasteSorter/compare/v0.1.0...v1.0.0
 [0.1.0]: https://github.com/USER/WasteSorter/releases/tag/v0.1.0
