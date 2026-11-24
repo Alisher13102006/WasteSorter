@@ -1,0 +1,14 @@
+name: Вопрос
+description: Вопрос по приложению «Сортировка мусора»
+labels: ["question", "triage"]
+body:
+  - type: textarea
+    id: main
+    attributes: { label: "Ваш вопрос" }
+    validations: { required: true }
+  - type: textarea
+    id: details
+    attributes: { label: "Что уже попробовали" }
+  - type: input
+    id: version
+    attributes: { label: "Версия приложения и Android", placeholder: "1.2.1, Android 14, Pixel 7" }

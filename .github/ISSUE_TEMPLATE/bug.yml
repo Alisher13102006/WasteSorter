@@ -1,0 +1,22 @@
+name: Ошибка (баг)
+description: Ошибка (баг) по приложению «Сортировка мусора»
+labels: ["bug", "triage"]
+body:
+  - type: textarea
+    id: main
+    attributes: { label: "Что произошло" }
+    validations: { required: true }
+  - type: textarea
+    id: details
+    attributes: { label: "Шаги воспроизведения" }
+  - type: input
+    id: version
+    attributes: { label: "Версия приложения и Android", placeholder: "1.2.1, Android 14, Pixel 7" }
+  - type: textarea
+    id: photo
+    attributes: { label: "Фото предмета (если модель ошиблась)", description: "Перетащите сюда снимок — он поможет дообучить модель" }
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Насколько мешает
+      options: ["Приложение падает / данные теряются", "Функция не работает", "Неудобно / косметика"]

@@ -14,6 +14,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -44,6 +46,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // ЛР8 задания 13–14: мониторинг, feature flags, проверка обновления в Google Play
+        Monitoring.init(this)
+        FeatureFlags.init(this)
+        if (savedInstanceState == null) UpdateChecker.check(this)
         classifier = WasteClassifier(this)
         setContent {
             MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
@@ -71,7 +77,12 @@ fun SorterScreen(classifier: WasteClassifier) {
         result = null
         busy = true
         scope.launch {
-            result = withContext(Dispatchers.Default) { classifier.classify(bmp) }
+            result = withContext(Dispatchers.Default) {
+                runCatching { classifier.classify(bmp) }.onFailure(Monitoring::nonFatal).getOrNull()
+            }
+            result?.let {
+                Monitoring.event("classify", mapOf("label" to it.label, "sure" to (it.confidence >= MIN_CONFIDENCE).toString()))
+            }
             busy = false
         }
     }
@@ -126,6 +137,8 @@ fun SorterScreen(classifier: WasteClassifier) {
         }
 
         result?.let { ResultCard(it) }
+
+        VersionFooter()
     }
 }
 
@@ -178,6 +191,22 @@ fun ResultCard(r: Prediction) {
             }
         }
     }
+}
+
+/**
+ * ЛР8: версия и тип сборки. Долгое нажатие — тестовый крэш для Crashlytics (задание 13):
+ * скрыт от обычных пользователей, но работает в любой сборке, включая release.
+ */
+@Composable
+fun VersionFooter() {
+    Text(
+        "Версия ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}) · ${BuildConfig.BUILD_TYPE}",
+        Modifier
+            .fillMaxWidth()
+            .pointerInput(Unit) { detectTapGestures(onLongPress = { Monitoring.testCrash() }) },
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
 }
 
 /** Загружает фото из галереи уменьшенным (модели хватает 224×224) и с учётом поворота. */

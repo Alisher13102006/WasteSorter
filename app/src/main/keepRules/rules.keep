@@ -1,0 +1,16 @@
+# ЛР8 задание 4: правила R8.
+
+# Номера строк в стектрейсах; mapping.txt восстанавливает исходные имена (retrace).
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
+
+# TensorFlow Lite (LiteRT) вызывает Java-классы из нативного кода через JNI — их нельзя переименовывать.
+-keep class org.tensorflow.lite.** { *; }
+-dontwarn org.tensorflow.lite.**
+
+# Задание 1: отладочные логи вырезаются из release-кода.
+-assumenosideeffects class android.util.Log {
+    public static int v(...);
+    public static int d(...);
+    public static int i(...);
+}

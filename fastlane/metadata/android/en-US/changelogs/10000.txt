@@ -1,0 +1,1 @@
+First release: recognizes plastic, glass and paper from a photo, with disposal and recycling tips.

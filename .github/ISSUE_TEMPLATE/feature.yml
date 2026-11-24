@@ -1,0 +1,14 @@
+name: Пожелание
+description: Пожелание по приложению «Сортировка мусора»
+labels: ["enhancement", "triage"]
+body:
+  - type: textarea
+    id: main
+    attributes: { label: "Что хотите получить" }
+    validations: { required: true }
+  - type: textarea
+    id: details
+    attributes: { label: "Зачем это нужно" }
+  - type: input
+    id: version
+    attributes: { label: "Версия приложения и Android", placeholder: "1.2.1, Android 14, Pixel 7" }

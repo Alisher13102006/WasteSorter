@@ -1,0 +1,11 @@
+Not sure where a bottle or a box goes? Take a photo: the app tells you in a second.
+
+• Recognizes plastic, glass and paper with an on-device neural network, no internet needed.
+• Shows the right bin: yellow for plastic, green for glass, blue for paper.
+• Explains how to prepare the item: rinse it, remove the cap, flatten cardboard.
+• Tells you what recycled material becomes: new bottles, fleece clothing, insulation.
+• Honestly says "not sure" when the photo is unclear and suggests how to retake it.
+• Use the camera or pick a photo from the gallery.
+• Light and dark theme.
+
+Photos never leave your device: recognition works offline. No ads, no sign-up, no paid features.
