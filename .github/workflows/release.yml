@@ -17,6 +17,9 @@ on:
         description: "Доля пользователей для production (0.01, 0.1, 0.5, 1.0)"
         default: "0.01"
 
+permissions:
+  contents: write      # создание GitHub Release
+
 env:
   PACKAGE: kz.wastesorter.app
 
@@ -75,6 +78,9 @@ jobs:
   internal:
     name: Загрузка в трек internal
     needs: build
+    # Google Play необязателен: включается переменной репозитория PLAY_ENABLED=true
+    # (Settings -> Secrets and variables -> Actions -> Variables), когда есть аккаунт Play Console.
+    if: vars.PLAY_ENABLED == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -93,6 +99,7 @@ jobs:
   production:
     name: Production (поэтапно, после ручного подтверждения)
     needs: internal
+    if: vars.PLAY_ENABLED == 'true'
     runs-on: ubuntu-latest
     environment: production        # Required reviewers -> job ждёт нажатия "Approve"
     steps:

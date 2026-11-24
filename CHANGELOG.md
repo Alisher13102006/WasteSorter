@@ -37,9 +37,9 @@
 - Распознавание пластика, стекла и бумаги моделью TensorFlow Lite (вход 224×224).
 - Фото с камеры и из галереи, карточка результата с контейнером и советами по сдаче.
 
-[Unreleased]: https://github.com/USER/WasteSorter/compare/v1.2.1...HEAD
-[1.2.1]: https://github.com/USER/WasteSorter/compare/v1.2.0...v1.2.1
-[1.2.0]: https://github.com/USER/WasteSorter/compare/v1.1.0...v1.2.0
-[1.1.0]: https://github.com/USER/WasteSorter/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/USER/WasteSorter/compare/v0.1.0...v1.0.0
-[0.1.0]: https://github.com/USER/WasteSorter/releases/tag/v0.1.0
+[Unreleased]: https://github.com/Alisher13102006/WasteSorter/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/Alisher13102006/WasteSorter/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/Alisher13102006/WasteSorter/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/Alisher13102006/WasteSorter/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/Alisher13102006/WasteSorter/compare/v0.1.0...v1.0.0
+[0.1.0]: https://github.com/Alisher13102006/WasteSorter/releases/tag/v0.1.0
