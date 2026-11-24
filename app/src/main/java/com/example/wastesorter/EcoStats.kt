@@ -14,8 +14,8 @@ class EcoStats(private val counts: MutableMap<String, Int> = mutableMapOf()) {
 
     fun count(label: String): Int = counts[label] ?: 0
 
-    /** Доля вида отхода в процентах. */
-    fun percent(label: String): Int = count(label) * 100 / total
+    /** Доля вида отхода в процентах. Hotfix 1.2.1: пустая статистика -> 0 %, а не деление на ноль. */
+    fun percent(label: String): Int = if (total == 0) 0 else count(label) * 100 / total
 
     companion object {
         private const val PREFS = "eco_stats"

@@ -18,7 +18,7 @@ if (firebaseEnabled) {
 // versionCode = MAJOR*10000 + MINOR*100 + PATCH: всегда растёт, 1.2.1 -> 10201.
 val versionMajor = 1
 val versionMinor = 2
-val versionPatch = 0
+val versionPatch = 1
 val semVer = "$versionMajor.$versionMinor.$versionPatch"
 val semVerCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
 
