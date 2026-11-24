@@ -75,9 +75,11 @@ object Monitoring {
  * это замена «отката», которого в магазинах нет.
  */
 object FeatureFlags {
+    const val SHARE_RESULT = "share_result_enabled"        // функция версии 1.1.0
     const val MIN_VERSION_CODE = "min_supported_version"   // ниже — принудительное обновление
 
     private val defaults = mapOf<String, Any>(
+        SHARE_RESULT to true,
         MIN_VERSION_CODE to 0L,
     )
     private var rc: FirebaseRemoteConfig? = null

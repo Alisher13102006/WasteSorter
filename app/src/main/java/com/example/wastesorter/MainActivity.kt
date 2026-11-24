@@ -12,6 +12,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -33,15 +34,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
-/** Ниже этой уверенности приложение честно говорит «не уверен». */
-private const val MIN_CONFIDENCE = 0.5f
 
 class MainActivity : ComponentActivity() {
-    private lateinit var classifier: WasteClassifier
+    // 1.1.0: состояние и модель живут в ViewModel — переживают поворот экрана и смену темы
+    private val vm: SorterViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,42 +46,21 @@ class MainActivity : ComponentActivity() {
         Monitoring.init(this)
         FeatureFlags.init(this)
         if (savedInstanceState == null) UpdateChecker.check(this)
-        classifier = WasteClassifier(this)
         setContent {
             MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
-                Surface(Modifier.fillMaxSize()) { SorterScreen(classifier) }
+                Surface(Modifier.fillMaxSize()) { SorterScreen(vm) }
             }
         }
-    }
-
-    override fun onDestroy() {
-        classifier.close()
-        super.onDestroy()
     }
 }
 
 @Composable
-fun SorterScreen(classifier: WasteClassifier) {
+fun SorterScreen(vm: SorterViewModel) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    var photo by remember { mutableStateOf<Bitmap?>(null) }
-    var result by remember { mutableStateOf<Prediction?>(null) }
-    var busy by remember { mutableStateOf(false) }
-
-    fun analyze(bmp: Bitmap) {
-        photo = bmp
-        result = null
-        busy = true
-        scope.launch {
-            result = withContext(Dispatchers.Default) {
-                runCatching { classifier.classify(bmp) }.onFailure(Monitoring::nonFatal).getOrNull()
-            }
-            result?.let {
-                Monitoring.event("classify", mapOf("label" to it.label, "sure" to (it.confidence >= MIN_CONFIDENCE).toString()))
-            }
-            busy = false
-        }
-    }
+    val photo = vm.photo
+    val result = vm.result
+    val busy = vm.busy
+    fun analyze(bmp: Bitmap) = vm.analyze(bmp)
 
     val takePhoto = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bmp ->
         bmp?.let(::analyze)
@@ -136,14 +111,14 @@ fun SorterScreen(classifier: WasteClassifier) {
             ) { Text("Из галереи") }
         }
 
-        result?.let { ResultCard(it) }
+        result?.let { ResultCard(it, onShare = { shareResult(context, it) }) }
 
         VersionFooter()
     }
 }
 
 @Composable
-fun ResultCard(r: Prediction) {
+fun ResultCard(r: Prediction, onShare: () -> Unit = {}) {
     val sure = r.confidence >= MIN_CONFIDENCE
     val info = infoFor(r.label)
     val accent = if (sure) info.color else Color.Gray
@@ -188,6 +163,10 @@ fun ResultCard(r: Prediction) {
                 Text(info.howTo, style = MaterialTheme.typography.bodyMedium)
                 Text("Что из этого сделают", fontWeight = FontWeight.SemiBold)
                 info.becomes.forEach { Text("• $it", style = MaterialTheme.typography.bodyMedium) }
+                // 1.1.0: новая функция за feature flag — её можно выключить в Remote Config без релиза
+                if (FeatureFlags.isEnabled(FeatureFlags.SHARE_RESULT)) {
+                    OutlinedButton(onClick = onShare, Modifier.fillMaxWidth()) { Text("Поделиться") }
+                }
             }
         }
     }

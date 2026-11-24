@@ -15,3 +15,14 @@ class WasteInfoTest {
 
     @Test fun binsAreDifferent() = assertEquals(WASTE_INFO.size, WASTE_INFO.values.map { it.bin }.toSet().size)
 }
+
+/** 1.1.0: «Поделиться». */
+class ShareTextTest {
+    @Test fun containsBinAndHowTo() {
+        val text = shareText(Prediction("glass", 0.9f, listOf("glass" to 0.9f)))
+        assertTrue(text.contains("Зелёный контейнер"))
+        assertTrue(text.contains("Промойте"))
+    }
+
+    @Test fun shareEnabledByDefault() = assertTrue(FeatureFlags.isEnabled(FeatureFlags.SHARE_RESULT))
+}
