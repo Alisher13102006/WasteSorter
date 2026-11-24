@@ -17,6 +17,7 @@ Release или staging → долгое нажатие на строку «Ве�
 - вручную: `~/Library/Android/sdk/cmdline-tools/latest/bin/retrace app/build/outputs/mapping/release/mapping.txt stacktrace.txt`.
 
 ## Оповещения
+
 | Оповещение | Где | Порог |
 |------------|-----|-------|
 | Доля ответов «не уверен» > 40 % (модель плохо работает на реальных фото) | Analytics → Custom alert по событию `classify`, `sure=false` | > 40 % за сутки |

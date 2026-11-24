@@ -14,6 +14,7 @@ SemVer `MAJOR.MINOR.PATCH`, задаётся в `app/build.gradle.kts` (`version
 что тег совпадает с версией в Gradle.
 
 ## Варианты сборки (задание 3)
+
 | Вариант | applicationId | API | Иконка | Подпись |
 |---------|---------------|-----|--------|---------|
 | debug | `kz.wastesorter.app.debug` | dev.api.wastesorter.kz | оранжевая, «Сортировка (Debug)» | debug-ключ |
@@ -56,6 +57,7 @@ R8 сжимает только код и ресурсы. Поэтому AAB вы
   офлайн-носителе. В CI — base64 в Secret `RELEASE_KEYSTORE_BASE64`.
 
 ## Форматы и установка (задание 6)
+
 | | AAB | APK |
 |-|-----|-----|
 | Для чего | Google Play (обязателен с 2021) | RuStore, GitHub Releases, прямая установка |
@@ -92,6 +94,7 @@ adb install -r app/build/outputs/apk/release/app-release.apk
 (публикуется через GitHub Pages). Data Safety: `docs/DATA_SAFETY.md`.
 
 ## Поэтапный выпуск (задание 12)
+
 | Способ | Как | Плюсы | Минусы |
 |--------|-----|-------|--------|
 | Закрытое / внутреннее тестирование | только список тестировщиков | без риска для пользователей | мало устройств, нет реальной нагрузки |
