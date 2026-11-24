@@ -1,7 +1,7 @@
 # ЛР8 задания 11–12: CD. Тег v* -> подписанный AAB -> трек internal -> (ручное подтверждение) -> production.
 #
 # CI Secrets (Settings -> Secrets and variables -> Actions):
-#   RELEASE_KEYSTORE_BASE64   base64 от upload-keystore (.jks):  base64 -i myphone-upload.jks | pbcopy
+#   RELEASE_KEYSTORE_BASE64   base64 от upload-keystore (.jks):  base64 -i wastesorter-upload.jks | pbcopy
 #   RELEASE_STORE_PASSWORD, RELEASE_KEY_ALIAS, RELEASE_KEY_PASSWORD
 #   PLAY_SERVICE_ACCOUNT_JSON JSON сервис-аккаунта Google Cloud с доступом к Play Console (роль Release manager)
 #   GOOGLE_SERVICES_JSON      (необязательно) содержимое app/google-services.json для Crashlytics
